@@ -22,12 +22,12 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(306, 243)
+        Form.resize(350, 243)
         self.tableWidget = QTableWidget(Form)
         self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setGeometry(QRect(20, 30, 256, 192))
-        self.tableWidget.setColumnCount(2)
-        self.tableWidget.setHorizontalHeaderLabels(["Вещь", "Количество"])
+        self.tableWidget.setGeometry(QRect(20, 30, 310, 192))
+        self.tableWidget.setColumnCount(3)
+        self.tableWidget.setHorizontalHeaderLabels(["Вещь", "Количество", "Дата получения"])
         self.label = QLabel(Form)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(20, 10, 51, 20))
