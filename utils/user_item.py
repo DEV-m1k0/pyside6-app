@@ -21,7 +21,7 @@ class UserItem:
     
     def get(self) -> models.UserItem:
         return self.__USER_ITEM
-
+    
     def __check_exist_user_by_id(self) -> bool:
         with models.Session() as session:
             user = session.scalar(select(models.User).where(models.User.id==self.__USER_ITEM.user_id))
