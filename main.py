@@ -1,3 +1,5 @@
+from datetime import datetime
+import os
 import pandas as pd
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -8,7 +10,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
-    QStatusBar, QWidget, QTableWidgetItem, QFileDialog)
+    QStatusBar, QWidget, QTableWidgetItem, QFileDialog,
+    QMessageBox)
 from main_ui import Ui_MainWindow
 from another_ui import Ui_Form
 from models import create_db_and_tables, Session
@@ -46,33 +49,56 @@ class MainWindow(QMainWindow):
         self.ui.users_list.clicked.connect(self.select_user)
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.combo_box_users_list.currentIndexChanged.connect(self.select_action)
-        self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
+        # self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
         self.new_window = AnotherWindow()
-        
-
+    
 
     def select_action(self, action_id: int):
         if action_id == 1:
             self.import_excel()
         elif action_id == 2:
-            users = get_all_users()
-            data = []
-            for user in users:
-                users_items = get_user_items_by_user_id(user.id)
-                data.append([user.full_name])
-                total = 0
-                for i in users_items:
-                    data.append([get_item_by_id(i.item_id).title, i.count, i.date_of_receipt])
-                    total += i.count
-                data.append(['Итого', total])
-                data.append([])
-            df = pd.DataFrame(data=data)
-            writer = pd.ExcelWriter('Мама, роди меня обратно.xlsx', engine='xlsxwriter')
-            df.to_excel(writer, sheet_name="Sheet1")
-            workbook = writer.book
-            worksheet = writer.sheets['Sheet1']
-            worksheet.set_column(3,3, 10)
-            writer._save()
+            try:
+                users = get_all_users()
+                data = []
+                for user in users:
+                    users_items = get_user_items_by_user_id(user.id)
+                    data.append([user.full_name])
+                    total = 0
+                    for i in users_items:
+                        data.append([get_item_by_id(i.item_id).title, i.count, i.date_of_receipt])
+                        total += i.count
+                    data.append(['Итого', total])
+                    data.append([])
+                
+                date_now = str(datetime.now()).split(".")[0]
+                excel_file_name = f"Учет {date_now}.xlsx"
+                df = pd.DataFrame(data=data)
+                writer = pd.ExcelWriter(f'./data/{excel_file_name}', engine='xlsxwriter')
+                df.to_excel(writer, sheet_name="Sheet1")
+                workbook = writer.book
+                worksheet = writer.sheets['Sheet1']
+                worksheet.set_column(3,3, 10)
+                writer._save()
+                path_to_file = f"{os.path.dirname(__file__)}/{excel_file_name}"
+
+                message_box = QMessageBox()
+                message_box.setWindowTitle("Информация о создании excel")
+                message_box.setText(f"""
+                                    Эксель файл был успешно создан!
+                                    Путь до созданного файла:
+                                    {path_to_file}
+                                    """)
+                message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+                message_box.exec()
+            except Exception as e:
+                message_box = QMessageBox()
+                message_box.setWindowTitle("Информация о создании excel")
+                message_box.setText(f"""
+                                    При создании excel отчета произошла ошибка!
+                                    Причина ошибки: {e}
+                                    """)
+                message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+                message_box.exec()
                                           
     
     def select_user(self, data: QModelIndex):
@@ -98,13 +124,27 @@ class MainWindow(QMainWindow):
             user_items_len = len(user_items)
             table_widget_info_selected_user.setRowCount(user_items_len)
 
+            items_and_count = {}
+
             for i in range(user_items_len):
                 item_id = user_items[i].item_id
                 item = get_item_by_id(item_id)
+                try:
+                    items_and_count[item.title] += user_items[i].count
+                except:
+                    items_and_count[item.title] = user_items[i].count
                 table_widget_info_selected_user.setItem(i, 0, QTableWidgetItem(item.title))
                 table_widget_info_selected_user.setItem(i, 1, QTableWidgetItem(str(user_items[i].count)))
                 table_widget_info_selected_user.setItem(i, 2, QTableWidgetItem(str(user_items[i].date_of_receipt)))
             table_widget_info_selected_user.show()
+
+            len_items_and_count = len(list(items_and_count.keys()))
+            self.ui.table_widget_total_selected_user.setRowCount(len_items_and_count)
+
+            for i in range(len_items_and_count):
+                self.ui.table_widget_total_selected_user.setItem(i, 0, QTableWidgetItem(list(items_and_count.keys())[i]))
+                self.ui.table_widget_total_selected_user.setItem(i, 1, QTableWidgetItem(str(list(items_and_count.values())[i])))
+            self.ui.table_widget_total_selected_user.show()
     
         except Exception as e:
             self.ui.label_selected_user.setText("Выберите человека")
@@ -174,38 +214,10 @@ class MainWindow(QMainWindow):
         for i in range(users_count):
             self.ui.users_list.addItem(QListWidgetItem(f"{i+1}. {users[i].full_name}"))
     
-    # def open(self, data: QModelIndex):
-    #     try:
-    #         if data.data() == "Пользователь не найден":
-    #             raise Exception
-    #         self.new_window.show()
-    #         self.new_window.setWindowTitle(data.data())
-    #         logging.debug(f"Окно пользователя {data.data()} было открыто")
-    #         user = get_user_by_full_name(data.data())
-    #         if not user:
-    #             raise Exception
-    #         user_items = get_user_items_by_user_id(user_id=user.id)
-
-    #         tableWidget = self.new_window.ui.tableWidget
-
-    #         user_items_len = len(user_items)
-    #         tableWidget.setRowCount(user_items_len)
-
-    #         for i in range(user_items_len):
-    #             item_id = user_items[i].item_id
-    #             item = get_item_by_id(item_id)
-    #             tableWidget.setItem(i, 0, QTableWidgetItem(item.title))
-    #             tableWidget.setItem(i, 1, QTableWidgetItem(str(user_items[i].count)))
-    #             tableWidget.setItem(i, 2, QTableWidgetItem(str(user_items[i].date_of_receipt)))
-    #         tableWidget.show()
-
-    #     except Exception as e:
-    #         logging.warning(f"Окно с пользователем {data.data()} не было открыто {e}", exc_info=True)
-    #         return 0
-
-    
 
 if __name__ == '__main__':
+    if not "data" in os.listdir("./"):
+        os.mkdir("./data/")
     setup_logging()
     logging.info("Приложение запущено")
     app = QApplication([])

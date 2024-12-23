@@ -12,6 +12,7 @@
 *.sqlite3
 *.db-shm
 *.db-wal
+data
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
