@@ -113,6 +113,8 @@ class MainWindow(QMainWindow):
     
     def open(self, data: QModelIndex):
         try:
+            if data.data() == "Пользователь не найден":
+                raise Exception
             self.new_window.show()
             self.new_window.setWindowTitle(data.data())
             logging.debug(f"Окно пользователя {data.data()} было открыто")
