@@ -18,7 +18,7 @@ from utils.user import User, get_all_users, get_user_by_full_name
 from utils.item import get_item_by_id, Item
 from utils.user_item import get_user_items_by_user_id, UserItem
 from utils.logging import setup_logging, logging
-
+import openpyxl
 
 class AnotherWindow(QWidget):
     def __init__(self):
@@ -46,16 +46,34 @@ class MainWindow(QMainWindow):
         self.ui.users_list.clicked.connect(self.select_user)
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.combo_box_users_list.currentIndexChanged.connect(self.select_action)
-
+        self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
         self.new_window = AnotherWindow()
+        
 
 
     def select_action(self, action_id: int):
         if action_id == 1:
             self.import_excel()
         elif action_id == 2:
-            """Артем, тут должна быть реализована логика формирования excel для всех пользователей"""
-
+            users = get_all_users()
+            data = []
+            for user in users:
+                users_items = get_user_items_by_user_id(user.id)
+                data.append([user.full_name])
+                total = 0
+                for i in users_items:
+                    data.append([get_item_by_id(i.item_id).title, i.count, i.date_of_receipt])
+                    total += i.count
+                data.append(['Итого', total])
+                data.append([])
+            df = pd.DataFrame(data=data)
+            writer = pd.ExcelWriter('Мама, роди меня обратно.xlsx', engine='xlsxwriter')
+            df.to_excel(writer, sheet_name="Sheet1")
+            workbook = writer.book
+            worksheet = writer.sheets['Sheet1']
+            worksheet.set_column(3,3, 10)
+            writer._save()
+                                          
     
     def select_user(self, data: QModelIndex):
         try:
