@@ -21,13 +21,14 @@ from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QComboBox, QFr
     QMenuBar, QPushButton, QSizePolicy, QSplitter,
     QStatusBar, QTableWidget, QTableWidgetItem, QVBoxLayout,
     QWidget)
+from PySide6 import QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 600)
-        MainWindow.setStyleSheet(u"background-color: white;")
+        MainWindow.resize(802, 600)
+        MainWindow.setStyleSheet(u"background-color: #14213D;")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_7 = QVBoxLayout(self.centralwidget)
@@ -56,7 +57,7 @@ class Ui_MainWindow(object):
         font.setFamilies([u"Arial"])
         font.setPointSize(24)
         self.label.setFont(font)
-        self.label.setStyleSheet(u"color: black;")
+        self.label.setStyleSheet(u"color: #FFFFFF;")
         self.label.setLocale(QLocale(QLocale.Russian, QLocale.Russia))
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setWordWrap(True)
@@ -69,8 +70,8 @@ class Ui_MainWindow(object):
         font1.setFamilies([u"Arial"])
         font1.setPointSize(18)
         self.users_list.setFont(font1)
-        self.users_list.setStyleSheet(u"background-color: rgb(32, 33, 33);\n"
-"color: white;\n"
+        self.users_list.setStyleSheet(u"background-color: #E5E5E5;\n"
+"color: black;\n"
 "border-radius: 5px;\n"
 "padding-top: 10px;")
         self.users_list.setFrameShadow(QFrame.Shadow.Plain)
@@ -103,8 +104,8 @@ class Ui_MainWindow(object):
         font2.setPointSize(14)
         self.input_search.setFont(font2)
         self.input_search.setAutoFillBackground(False)
-        self.input_search.setStyleSheet(u"background-color: rgb(0, 0, 0);\n"
-"color: white;\n"
+        self.input_search.setStyleSheet(u"background-color: #FFFFFF;\n"
+"color: black;\n"
 "border-radius: 5px;\n"
 "padding-left: 5px;")
         self.input_search.setLocale(QLocale(QLocale.Russian, QLocale.Russia))
@@ -120,7 +121,7 @@ class Ui_MainWindow(object):
         self.btn_search.setMaximumSize(QSize(250, 16777215))
         self.btn_search.setFont(font2)
         self.btn_search.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btn_search.setStyleSheet(u"background-color: rgb(121, 255, 182);\n"
+        self.btn_search.setStyleSheet(u"background-color: #FCA311;\n"
 "border-radius: 5px;\n"
 "color: black;")
 
@@ -146,7 +147,7 @@ class Ui_MainWindow(object):
         self.combo_box_users_list.setMaximumSize(QSize(16777215, 16777215))
         self.combo_box_users_list.setFont(font2)
         self.combo_box_users_list.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.combo_box_users_list.setStyleSheet(u"background-color: rgb(121, 255, 182);\n"
+        self.combo_box_users_list.setStyleSheet(u"background-color: #FCA311;\n"
 "color: black;\n"
 "border-radius: 5px;\n"
 "min-height: 40px;\n"
@@ -173,7 +174,7 @@ class Ui_MainWindow(object):
         sizePolicy3.setHeightForWidth(self.label_selected_user.sizePolicy().hasHeightForWidth())
         self.label_selected_user.setSizePolicy(sizePolicy3)
         self.label_selected_user.setFont(font)
-        self.label_selected_user.setStyleSheet(u"color: black;")
+        self.label_selected_user.setStyleSheet(u"color: #FFFFFF;")
         self.label_selected_user.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.verticalLayout_2.addWidget(self.label_selected_user)
@@ -200,13 +201,15 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.table_widget_info_selected_user.sizePolicy().hasHeightForWidth())
         self.table_widget_info_selected_user.setSizePolicy(sizePolicy4)
-        self.table_widget_info_selected_user.setMinimumSize(QSize(0, 0))
+        self.table_widget_info_selected_user.setMinimumSize(QSize(400, 0))
         self.table_widget_info_selected_user.setFont(font2)
-        self.table_widget_info_selected_user.setStyleSheet(u"background-color: rgb(32, 33, 33);\n"
-"border-radius: 5px;")
-        self.table_widget_info_selected_user.horizontalHeader().setDefaultSectionSize(100)
+        self.table_widget_info_selected_user.setStyleSheet(u"background-color: #E5E5E5;\n"
+"border-radius: 5px;\n"
+"color: black;")
+        self.table_widget_info_selected_user.horizontalHeader().setDefaultSectionSize(125)
         self.table_widget_info_selected_user.horizontalHeader().setProperty(u"showSortIndicator", True)
         self.table_widget_info_selected_user.horizontalHeader().setStretchLastSection(True)
+        self.table_widget_info_selected_user.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 
         self.verticalLayout_2.addWidget(self.table_widget_info_selected_user)
 
@@ -218,11 +221,12 @@ class Ui_MainWindow(object):
         self.label_3 = QLabel(self.layoutWidget)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setFont(font1)
-        self.label_3.setStyleSheet(u"color: black;")
+        self.label_3.setStyleSheet(u"color: #FFFFFF;")
 
         self.verticalLayout_3.addWidget(self.label_3)
 
         self.table_widget_total_selected_user = QTableWidget(self.layoutWidget)
+        self.table_widget_total_selected_user.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         if (self.table_widget_total_selected_user.columnCount() < 2):
             self.table_widget_total_selected_user.setColumnCount(2)
         __qtablewidgetitem3 = QTableWidgetItem()
@@ -234,8 +238,9 @@ class Ui_MainWindow(object):
         self.table_widget_total_selected_user.setObjectName(u"table_widget_total_selected_user")
         self.table_widget_total_selected_user.setFont(font2)
         self.table_widget_total_selected_user.setAutoFillBackground(False)
-        self.table_widget_total_selected_user.setStyleSheet(u"background-color: rgb(32, 33, 33);\n"
-"border-radius: 5px;")
+        self.table_widget_total_selected_user.setStyleSheet(u"background-color: #E5E5E5;\n"
+"border-radius: 5px;\n"
+"color: black;")
         self.table_widget_total_selected_user.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.table_widget_total_selected_user.horizontalHeader().setCascadingSectionResizes(False)
         self.table_widget_total_selected_user.horizontalHeader().setHighlightSections(True)
@@ -258,7 +263,7 @@ class Ui_MainWindow(object):
         self.btn_get_excel_selected_user.setFont(font2)
         self.btn_get_excel_selected_user.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_get_excel_selected_user.setStyleSheet(u"QPushButton{\n"
-"	background-color: rgb(121, 255, 182);\n"
+"	background-color: #FCA311;\n"
 "	color: black;\n"
 "	border-radius: 5px;\n"
 "	min-height: 40px;\n"
@@ -267,8 +272,8 @@ class Ui_MainWindow(object):
 "	margin-bottom: 15px;\n"
 "}\n"
 "QPushButton:disabled{\n"
-"	background-color: rgb(95, 204, 148);\n"
-"	color: rgb(125, 128, 128);\n"
+"	background-color: rgb(213, 137, 14);\n"
+"	color: rgb(44, 44, 44);\n"
 "}\n"
 "")
 
@@ -279,13 +284,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addWidget(self.splitter)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
-        self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 24))
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
-        self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
 
@@ -297,9 +295,9 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"\u0421\u043f\u0438\u0441\u043e\u043a \u043b\u044e\u0434\u0435\u0439", None))
         self.input_search.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u041f\u043e\u0438\u0441\u043a", None))
         self.btn_search.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0439\u0442\u0438", None))
-        self.combo_box_users_list.setItemText(0, QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435", None))
-        self.combo_box_users_list.setItemText(1, QCoreApplication.translate("MainWindow", u"\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0447\u0435\u0440\u0435\u0437 Excel", None))
-        self.combo_box_users_list.setItemText(2, QCoreApplication.translate("MainWindow", u"\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u044c Excel", None))
+        self.combo_box_users_list.setItemText(0, "Выберите действие")
+        self.combo_box_users_list.setItemText(1, "Импортировать excel")
+        self.combo_box_users_list.setItemText(2, "Экспортировать excel")
 
         self.combo_box_users_list.setCurrentText("")
         self.combo_box_users_list.setPlaceholderText(QCoreApplication.translate("MainWindow", u"\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435", None))

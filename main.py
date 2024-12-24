@@ -148,6 +148,7 @@ class MainWindow(QMainWindow):
                 table_widget_info_selected_user.setItem(i, 1, QTableWidgetItem(str(user_items[i].count)))
                 formatted_date = user_items[i].date_of_receipt.strftime("%d.%m.%Y")
                 table_widget_info_selected_user.setItem(i, 2, QTableWidgetItem(str(formatted_date)))
+                table_widget_info_selected_user.edit
             table_widget_info_selected_user.show()
 
             len_items_and_count = len(list(items_and_count.keys()))
@@ -211,13 +212,13 @@ class MainWindow(QMainWindow):
             self.ui.users_list.clear()
             self.__fill_out_list_widget()
         else:
-            user = get_user_by_full_name(full_name=search_user)
-            if user is None:
-                self.ui.users_list.clear()
-                self.ui.users_list.addItem("Пользователь не найден")
-            else:
-                self.ui.users_list.clear()
-                self.ui.users_list.addItem(f"{user.id}. {user.full_name}")
+            self.ui.users_list.clear()
+            users = get_all_users()
+            for user in users:
+                if search_user in user.full_name:
+                    self.ui.users_list.addItem(f"{user.id}. {user.full_name}")
+            if self.ui.users_list.count() == 0:
+                self.ui.users_list.addItem(f"Люди с таким именем не найдены")
         
     
     def __fill_out_list_widget(self):
