@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>787</width>
+    <width>802</width>
     <height>600</height>
    </rect>
   </property>
@@ -113,21 +113,6 @@ padding-top: 10px;</string>
               <property name="itemAlignment">
                <set>Qt::AlignmentFlag::AlignCenter|Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
               </property>
-              <item>
-               <property name="text">
-                <string>sdfdsf</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>sdfdsf</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>sdfsdf</string>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>
@@ -338,7 +323,8 @@ text-align: center;</string>
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: #E5E5E5;
-border-radius: 5px;</string>
+border-radius: 5px;
+color: black;</string>
               </property>
               <attribute name="horizontalHeaderDefaultSectionSize">
                <number>125</number>
@@ -386,21 +372,6 @@ border-radius: 5px;</string>
                 </font>
                </property>
               </column>
-              <item row="0" column="0">
-               <property name="text">
-                <string>werwer</string>
-               </property>
-              </item>
-              <item row="0" column="1">
-               <property name="text">
-                <string>werwer</string>
-               </property>
-              </item>
-              <item row="0" column="2">
-               <property name="text">
-                <string>werwer</string>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>
@@ -436,7 +407,8 @@ border-radius: 5px;</string>
               </property>
               <property name="styleSheet">
                <string notr="true">background-color: #E5E5E5;
-border-radius: 5px;</string>
+border-radius: 5px;
+color: black;</string>
               </property>
               <property name="sizeAdjustPolicy">
                <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
@@ -478,16 +450,6 @@ border-radius: 5px;</string>
                 </font>
                </property>
               </column>
-              <item row="0" column="0">
-               <property name="text">
-                <string>ewrwer</string>
-               </property>
-              </item>
-              <item row="0" column="1">
-               <property name="text">
-                <string>ewrwer</string>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>
@@ -522,7 +484,7 @@ border-radius: 5px;</string>
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{
-	background-color: rgb(121, 255, 182);
+	background-color: #FCA311;
 	color: black;
 	border-radius: 5px;
 	min-height: 40px;
@@ -552,12 +514,11 @@ QPushButton:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>787</width>
-     <height>22</height>
+     <width>802</width>
+     <height>24</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
