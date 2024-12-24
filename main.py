@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         self.ui.users_list.clicked.connect(self.select_user)
         self.ui.btn_search.clicked.connect(self.search)
         self.ui.combo_box_users_list.currentIndexChanged.connect(self.select_action)
-        # self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
+        self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
         self.new_window = AnotherWindow()
     
 
@@ -70,26 +70,39 @@ class MainWindow(QMainWindow):
                     path_to_save_file = directory
                 users = get_all_users()
                 data = []
+                data.append(['Создано:', datetime.now().strftime("%d.%m.%Y")])
+                
                 for user in users:
                     users_items = get_user_items_by_user_id(user.id)
                     data.append([user.full_name])
-                    total = 0
+                    unique_items = []  
                     for i in users_items:
-                        data.append([get_item_by_id(i.item_id).title, i.count, i.date_of_receipt])
-                        total += i.count
-                    data.append(['Итого', total])
-                    data.append([])
-                
-                current_time = datetime.now()
-                formatted_time = current_time.strftime("%d.%m.%Y-%H:%M:%S")
+                        item_title = get_item_by_id(i.item_id).title
+                        item_count = i.count
+                        item_date = i.date_of_receipt
+                        if item_title not in unique_items:
+                            unique_items.append(item_title)
+                        data.append([item_title, item_count, item_date])
+                    data.append(['Итого:'])
+                    for unique in unique_items:
+                        count = 0
+                        for i in users_items:
+                            if unique == get_item_by_id(i.item_id).title:
+                                count += i.count
+                        data.append([unique, count])
+                    data.append([''])
 
-                excel_file_name = f"Учет_{formatted_time}.xlsx"
+                current_time = datetime.now()
+                formatted_time = current_time.strftime("%d-%m-%Y_%H.%M.%S")
+
+                excel_file_name = f"Учёт_{formatted_time}.xlsx"
                 df = pd.DataFrame(data=data)
-                writer = pd.ExcelWriter(f'{path_to_save_file}/{excel_file_name}', engine='xlsxwriter')
+                writer = pd.ExcelWriter(path=f'{path_to_save_file}/{excel_file_name}', engine='xlsxwriter')
                 df.to_excel(writer, sheet_name="Sheet1")
                 workbook = writer.book
                 worksheet = writer.sheets['Sheet1']
                 worksheet.set_column(3,3, 10)
+                worksheet.set_column(0,0, 10)
                 writer._save()
 
                 message_box = QMessageBox()
@@ -117,13 +130,13 @@ class MainWindow(QMainWindow):
             if data.data() == "Пользователь не найден":
                 raise Exception
             if str(data.data()[0]).isdigit():
-                selected_user_str = " ".join(str(data.data()).split(" ")[1:])
+                self.selected_user_str = " ".join(str(data.data()).split(" ")[1:])
             else:
-                selected_user_str = data.data()
-            logging.info(f"Выбран {selected_user_str}")
-            selected_user_obg = get_user_by_full_name(selected_user_str)
+                self.selected_user_str = data.data()
+            logging.info(f"Выбран {self.selected_user_str}")
+            selected_user_obg = get_user_by_full_name(self.selected_user_str)
             logging.debug(f"{selected_user_obg} был найден в базе данных")
-            self.ui.label_selected_user.setText(selected_user_str)
+            self.ui.label_selected_user.setText(self.selected_user_str)
             self.ui.btn_get_excel_selected_user.setEnabled(True)
 
             if not selected_user_obg:
@@ -135,15 +148,15 @@ class MainWindow(QMainWindow):
             user_items_len = len(user_items)
             table_widget_info_selected_user.setRowCount(user_items_len)
 
-            items_and_count = {}
+            self.items_and_count = {}
 
             for i in range(user_items_len):
                 item_id = user_items[i].item_id
                 item = get_item_by_id(item_id)
                 try:
-                    items_and_count[item.title] += user_items[i].count
+                    self.items_and_count[item.title] += user_items[i].count
                 except:
-                    items_and_count[item.title] = user_items[i].count
+                    self.items_and_count[item.title] = user_items[i].count
                 table_widget_info_selected_user.setItem(i, 0, QTableWidgetItem(item.title))
                 table_widget_info_selected_user.setItem(i, 1, QTableWidgetItem(str(user_items[i].count)))
                 formatted_date = user_items[i].date_of_receipt.strftime("%d.%m.%Y")
@@ -151,12 +164,12 @@ class MainWindow(QMainWindow):
                 table_widget_info_selected_user.edit
             table_widget_info_selected_user.show()
 
-            len_items_and_count = len(list(items_and_count.keys()))
+            len_items_and_count = len(list(self.items_and_count.keys()))
             self.ui.table_widget_total_selected_user.setRowCount(len_items_and_count)
 
             for i in range(len_items_and_count):
-                self.ui.table_widget_total_selected_user.setItem(i, 0, QTableWidgetItem(list(items_and_count.keys())[i]))
-                self.ui.table_widget_total_selected_user.setItem(i, 1, QTableWidgetItem(str(list(items_and_count.values())[i])))
+                self.ui.table_widget_total_selected_user.setItem(i, 0, QTableWidgetItem(list(self.items_and_count.keys())[i]))
+                self.ui.table_widget_total_selected_user.setItem(i, 1, QTableWidgetItem(str(list(self.items_and_count.values())[i])))
             self.ui.table_widget_total_selected_user.show()
     
         except Exception as e:
@@ -165,7 +178,41 @@ class MainWindow(QMainWindow):
             self.ui.table_widget_info_selected_user.clearContents()
             self.ui.table_widget_total_selected_user.clearContents()
             logging.warning(f"Окно с пользователем {data.data()} не было открыто {e}", exc_info=True)
+            
+#SECTION - Экспорт      
+#LINK Это создание экселя 1 челика!!!!!!
 
+    def user_excel(self):
+        data=[]
+        data.append(['Создано:', datetime.now().strftime("%d.%m.%Y")])
+        
+        selected_user_obg = get_user_by_full_name(self.selected_user_str)
+        user_items = get_user_items_by_user_id(user_id=selected_user_obg.id)
+        data.append([selected_user_obg.full_name])
+        
+        for i in user_items:
+            item_title = get_item_by_id(i.item_id).title
+            item_count = i.count
+            item_date = i.date_of_receipt
+            data.append([item_title, item_count, item_date])
+            
+        data.append(['Итого:'])
+        
+        for i in self.items_and_count:
+            data.append([i, self.items_and_count[i]])
+            
+        current_time = datetime.now()
+        formatted_time = current_time.strftime("%d-%m-%Y_%H.%M.%S")
+        excel_file_name = f"Учёт_{selected_user_obg.full_name}_{formatted_time}.xlsx"
+        df = pd.DataFrame(data=data)
+        writer = pd.ExcelWriter(path=f'{excel_file_name}', engine='xlsxwriter')
+        df.to_excel(writer, sheet_name="Sheet1")
+        workbook = writer.book
+        worksheet = writer.sheets['Sheet1']
+        worksheet.set_column(3,3, 10)
+        worksheet.set_column(0,0, 10)
+        writer._save()
+        
 
 
     def import_excel(self):

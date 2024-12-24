@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.label.setLocale(QLocale(QLocale.Russian, QLocale.Russia))
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setWordWrap(True)
-
+        self.items_and_count = {}
         self.verticalLayout.addWidget(self.label)
 
         self.users_list = QListWidget(self.frame)
