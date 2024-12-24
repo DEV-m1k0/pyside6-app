@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import os
 import pandas as pd
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
@@ -143,7 +143,8 @@ class MainWindow(QMainWindow):
                     items_and_count[item.title] = user_items[i].count
                 table_widget_info_selected_user.setItem(i, 0, QTableWidgetItem(item.title))
                 table_widget_info_selected_user.setItem(i, 1, QTableWidgetItem(str(user_items[i].count)))
-                table_widget_info_selected_user.setItem(i, 2, QTableWidgetItem(str(user_items[i].date_of_receipt)))
+                formatted_date = user_items[i].date_of_receipt.strftime("%d.%m.%Y")
+                table_widget_info_selected_user.setItem(i, 2, QTableWidgetItem(str(formatted_date)))
             table_widget_info_selected_user.show()
 
             len_items_and_count = len(list(items_and_count.keys()))
