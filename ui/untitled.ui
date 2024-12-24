@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>787</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <string>Учет</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: white;</string>
+   <string notr="true">background-color: #14213D;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -53,7 +53,7 @@
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">color: black;</string>
+               <string notr="true">color: #FFFFFF;</string>
               </property>
               <property name="locale">
                <locale language="Russian" country="Russia"/>
@@ -78,8 +78,8 @@
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(32, 33, 33);
-color: white;
+               <string notr="true">background-color: #E5E5E5;
+color: black;
 border-radius: 5px;
 padding-top: 10px;</string>
               </property>
@@ -113,6 +113,21 @@ padding-top: 10px;</string>
               <property name="itemAlignment">
                <set>Qt::AlignmentFlag::AlignCenter|Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
               </property>
+              <item>
+               <property name="text">
+                <string>sdfdsf</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>sdfdsf</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>sdfsdf</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
@@ -143,8 +158,8 @@ padding-top: 10px;</string>
                <bool>false</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 0, 0);
-color: white;
+               <string notr="true">background-color: #FFFFFF;
+color: black;
 border-radius: 5px;
 padding-left: 5px;</string>
               </property>
@@ -189,7 +204,7 @@ padding-left: 5px;</string>
                <cursorShape>PointingHandCursor</cursorShape>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(121, 255, 182);
+               <string notr="true">background-color: #FCA311;
 border-radius: 5px;
 color: black;</string>
               </property>
@@ -232,7 +247,7 @@ color: black;</string>
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(121, 255, 182);
+           <string notr="true">background-color: #FCA311;
 color: black;
 border-radius: 5px;
 min-height: 40px;
@@ -291,7 +306,7 @@ text-align: center;</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">color: black;</string>
+               <string notr="true">color: #FFFFFF;</string>
               </property>
               <property name="text">
                <string>Выберите человека</string>
@@ -311,7 +326,7 @@ text-align: center;</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>400</width>
                 <height>0</height>
                </size>
               </property>
@@ -322,11 +337,11 @@ text-align: center;</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(32, 33, 33);
+               <string notr="true">background-color: #E5E5E5;
 border-radius: 5px;</string>
               </property>
               <attribute name="horizontalHeaderDefaultSectionSize">
-               <number>100</number>
+               <number>125</number>
               </attribute>
               <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
                <bool>true</bool>
@@ -334,6 +349,7 @@ border-radius: 5px;</string>
               <attribute name="horizontalHeaderStretchLastSection">
                <bool>true</bool>
               </attribute>
+              <row/>
               <column>
                <property name="text">
                 <string>Предмет</string>
@@ -370,6 +386,21 @@ border-radius: 5px;</string>
                 </font>
                </property>
               </column>
+              <item row="0" column="0">
+               <property name="text">
+                <string>werwer</string>
+               </property>
+              </item>
+              <item row="0" column="1">
+               <property name="text">
+                <string>werwer</string>
+               </property>
+              </item>
+              <item row="0" column="2">
+               <property name="text">
+                <string>werwer</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
@@ -385,7 +416,7 @@ border-radius: 5px;</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">color: black;</string>
+               <string notr="true">color: #FFFFFF;</string>
               </property>
               <property name="text">
                <string>Итого:</string>
@@ -404,7 +435,7 @@ border-radius: 5px;</string>
                <bool>false</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(32, 33, 33);
+               <string notr="true">background-color: #E5E5E5;
 border-radius: 5px;</string>
               </property>
               <property name="sizeAdjustPolicy">
@@ -422,6 +453,7 @@ border-radius: 5px;</string>
               <attribute name="horizontalHeaderStretchLastSection">
                <bool>true</bool>
               </attribute>
+              <row/>
               <column>
                <property name="text">
                 <string>Предмет</string>
@@ -446,6 +478,16 @@ border-radius: 5px;</string>
                 </font>
                </property>
               </column>
+              <item row="0" column="0">
+               <property name="text">
+                <string>ewrwer</string>
+               </property>
+              </item>
+              <item row="0" column="1">
+               <property name="text">
+                <string>ewrwer</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
@@ -489,8 +531,8 @@ border-radius: 5px;</string>
 	margin-bottom: 15px;
 }
 QPushButton:disabled{
-	background-color: rgb(95, 204, 148);
-	color: rgb(125, 128, 128);
+	background-color: rgb(213, 137, 14);
+	color: rgb(44, 44, 44);
 }
 </string>
           </property>
@@ -510,8 +552,8 @@ QPushButton:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>24</height>
+     <width>787</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>
