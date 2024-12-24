@@ -260,6 +260,7 @@ class Ui_MainWindow(object):
         self.btn_get_excel_selected_user.setEnabled(False)
         self.btn_get_excel_selected_user.setMinimumSize(QSize(250, 55))
         self.btn_get_excel_selected_user.setMaximumSize(QSize(16777215, 16777215))
+        self.btn_get_excel_selected_user.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_get_excel_selected_user.setFont(font2)
         self.btn_get_excel_selected_user.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_get_excel_selected_user.setStyleSheet(u"QPushButton{\n"

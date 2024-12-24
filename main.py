@@ -178,42 +178,67 @@ class MainWindow(QMainWindow):
             self.ui.table_widget_info_selected_user.clearContents()
             self.ui.table_widget_total_selected_user.clearContents()
             logging.warning(f"Окно с пользователем {data.data()} не было открыто {e}", exc_info=True)
-            
-#SECTION - Экспорт      
-#LINK Это создание экселя 1 челика!!!!!!
 
     def user_excel(self):
-        data=[]
-        data.append(['Создано:', datetime.now().strftime("%d.%m.%Y")])
-        
-        selected_user_obg = get_user_by_full_name(self.selected_user_str)
-        user_items = get_user_items_by_user_id(user_id=selected_user_obg.id)
-        data.append([selected_user_obg.full_name])
-        
-        for i in user_items:
-            item_title = get_item_by_id(i.item_id).title
-            item_count = i.count
-            item_date = i.date_of_receipt
-            data.append([item_title, item_count, item_date])
-            
-        data.append(['Итого:'])
-        
-        for i in self.items_and_count:
-            data.append([i, self.items_and_count[i]])
-            
-        current_time = datetime.now()
-        formatted_time = current_time.strftime("%d-%m-%Y_%H.%M.%S")
-        excel_file_name = f"Учёт_{selected_user_obg.full_name}_{formatted_time}.xlsx"
-        df = pd.DataFrame(data=data)
-        writer = pd.ExcelWriter(path=f'{excel_file_name}', engine='xlsxwriter')
-        df.to_excel(writer, sheet_name="Sheet1")
-        workbook = writer.book
-        worksheet = writer.sheets['Sheet1']
-        worksheet.set_column(3,3, 10)
-        worksheet.set_column(0,0, 10)
-        writer._save()
-        
+        try:
+            options = QFileDialog.Option()
+            directory = QFileDialog.getExistingDirectory(
+                self,
+                "Выберите директорию для сохранения файла",
+                str(Path.home()),
+                options=options
+            )
+            if directory:
+                path_to_save_file = directory
 
+            data=[]
+            data.append(['Создано:', datetime.now().strftime("%d.%m.%Y")])
+            
+            selected_user_obg = get_user_by_full_name(self.selected_user_str)
+            user_items = get_user_items_by_user_id(user_id=selected_user_obg.id)
+            data.append([selected_user_obg.full_name])
+            
+            for i in user_items:
+                item_title = get_item_by_id(i.item_id).title
+                item_count = i.count
+                item_date = i.date_of_receipt.strftime("%d.%m.%Y")
+                data.append([item_title, item_count, item_date])
+                
+            data.append(['Итого:'])
+            
+            for i in self.items_and_count:
+                data.append([i, self.items_and_count[i]])
+                
+            current_time = datetime.now()
+            formatted_time = current_time.strftime("%d-%m-%Y_%H.%M.%S")
+            excel_file_name = f"Учёт_{selected_user_obg.full_name}_{formatted_time}.xlsx"
+            df = pd.DataFrame(data=data)
+            writer = pd.ExcelWriter(path=f'{path_to_save_file}/{excel_file_name}', engine='xlsxwriter')
+            df.to_excel(writer, sheet_name="Sheet1")
+            workbook = writer.book
+            worksheet = writer.sheets['Sheet1']
+            worksheet.set_column(3,3, 10)
+            worksheet.set_column(0,0, 10)
+            writer._save()
+
+            message_box = QMessageBox()
+            message_box.setWindowTitle("Информация о создании excel")
+            message_box.setText(f"""
+                                Excel файл был успешно создан!
+                                """)
+            message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+            message_box.exec()
+            self.ui.combo_box_users_list.setCurrentIndex(0)
+        except Exception as e:
+            message_box = QMessageBox()
+            message_box.setWindowTitle("Информация о создании excel")
+            message_box.setText(f"""
+                                При создании excel отчета произошла ошибка!
+                                """)
+            logging.error(f"{e}", exc_info=True)
+            message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
+            message_box.exec()
+        
 
     def import_excel(self):
         options = QFileDialog.Option()
