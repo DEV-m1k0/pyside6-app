@@ -58,6 +58,15 @@ class MainWindow(QMainWindow):
             self.import_excel()
         elif action_id == 2:
             try:
+                options = QFileDialog.Option()
+                directory = QFileDialog.getExistingDirectory(
+                    self,
+                    "Выберите директорию для сохранения файла",
+                    str(Path.home()),
+                    options=options
+                )
+                if directory:
+                    path_to_save_file = directory
                 users = get_all_users()
                 data = []
                 for user in users:
@@ -70,23 +79,22 @@ class MainWindow(QMainWindow):
                     data.append(['Итого', total])
                     data.append([])
                 
-                date_now = str(datetime.now()).split(".")[0]
-                excel_file_name = f"Учет {date_now}.xlsx"
+                current_time = datetime.now()
+                formatted_time = current_time.strftime("%d.%m.%Y-%H:%M:%S")
+
+                excel_file_name = f"Учет_{formatted_time}.xlsx"
                 df = pd.DataFrame(data=data)
-                writer = pd.ExcelWriter(f'./data/{excel_file_name}', engine='xlsxwriter')
+                writer = pd.ExcelWriter(f'{path_to_save_file}/{excel_file_name}', engine='xlsxwriter')
                 df.to_excel(writer, sheet_name="Sheet1")
                 workbook = writer.book
                 worksheet = writer.sheets['Sheet1']
                 worksheet.set_column(3,3, 10)
                 writer._save()
-                path_to_file = f"{os.path.dirname(__file__)}/{excel_file_name}"
 
                 message_box = QMessageBox()
                 message_box.setWindowTitle("Информация о создании excel")
                 message_box.setText(f"""
-                                    Эксель файл был успешно создан!
-                                    Путь до созданного файла:
-                                    {path_to_file}
+                                    Excel файл был успешно создан!
                                     """)
                 message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
                 message_box.exec()
@@ -95,8 +103,8 @@ class MainWindow(QMainWindow):
                 message_box.setWindowTitle("Информация о создании excel")
                 message_box.setText(f"""
                                     При создании excel отчета произошла ошибка!
-                                    Причина ошибки: {e}
                                     """)
+                logging.error(f"{e}", exc_info=True)
                 message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
                 message_box.exec()
                                           
@@ -205,7 +213,7 @@ class MainWindow(QMainWindow):
                 self.ui.users_list.addItem("Пользователь не найден")
             else:
                 self.ui.users_list.clear()
-                self.ui.users_list.addItem(user.full_name)
+                self.ui.users_list.addItem(f"{user.id}. {user.full_name}")
         
     
     def __fill_out_list_widget(self):
@@ -216,8 +224,6 @@ class MainWindow(QMainWindow):
     
 
 if __name__ == '__main__':
-    if not "data" in os.listdir("./"):
-        os.mkdir("./data/")
     setup_logging()
     logging.info("Приложение запущено")
     app = QApplication([])
