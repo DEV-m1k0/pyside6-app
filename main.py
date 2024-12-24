@@ -56,6 +56,7 @@ class MainWindow(QMainWindow):
     def select_action(self, action_id: int):
         if action_id == 1:
             self.import_excel()
+            self.ui.combo_box_users_list.setCurrentIndex(0)
         elif action_id == 2:
             try:
                 options = QFileDialog.Option()
@@ -98,6 +99,7 @@ class MainWindow(QMainWindow):
                                     """)
                 message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
                 message_box.exec()
+                self.ui.combo_box_users_list.setCurrentIndex(0)
             except Exception as e:
                 message_box = QMessageBox()
                 message_box.setWindowTitle("Информация о создании excel")
@@ -107,6 +109,7 @@ class MainWindow(QMainWindow):
                 logging.error(f"{e}", exc_info=True)
                 message_box.setStandardButtons(QMessageBox.StandardButton.Ok)
                 message_box.exec()
+                self.ui.combo_box_users_list.setCurrentIndex(0)
                                           
     
     def select_user(self, data: QModelIndex):
