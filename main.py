@@ -7,13 +7,13 @@ from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
 from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
+    QPalette, QPixmap, QRadialGradient, QTransform,
+    QResizeEvent)
 from PySide6.QtWidgets import (QApplication, QLabel, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QPushButton, QSizePolicy,
     QStatusBar, QWidget, QTableWidgetItem, QFileDialog,
     QMessageBox)
 from main_ui import Ui_MainWindow
-from another_ui import Ui_Form
 from models import create_db_and_tables, Session
 from sqlalchemy.sql import select
 from pathlib import Path, PosixPath
@@ -21,14 +21,6 @@ from utils.user import User, get_all_users, get_user_by_full_name
 from utils.item import get_item_by_id, Item
 from utils.user_item import get_user_items_by_user_id, UserItem
 from utils.logging import setup_logging, logging
-import openpyxl
-
-class AnotherWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
-        self.setFixedSize(self.size())
 
 
 class MainWindow(QMainWindow):
@@ -51,8 +43,18 @@ class MainWindow(QMainWindow):
         self.ui.input_search.textChanged.connect(self.input_search_text_changed)
         self.ui.combo_box_users_list.currentIndexChanged.connect(self.select_action)
         self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
-        self.new_window = AnotherWindow()
+        self.ui.users_list.resizeEvent = self.users_list_resize_event
     
+    def users_list_resize_event(self, event: QResizeEvent):
+        self.set_size_for_row()
+
+
+    def set_size_for_row(self):
+        for i in range(self.ui.users_list.count()):
+            item = self.ui.users_list.item(i)
+            item.setSizeHint(QSize(self.ui.users_list.width()-2, 30))
+
+
     def input_search_text_changed(self, event):
         self.search()
 
@@ -301,8 +303,10 @@ class MainWindow(QMainWindow):
             for user in users:
                 if search_user in user.full_name:
                     self.ui.users_list.addItem(f"{user.id}. {user.full_name}")
+            self.set_size_for_row()
             if self.ui.users_list.count() == 0:
                 self.ui.users_list.addItem(f"Люди с таким именем не найдены")
+                self.set_size_for_row()
         
     
     def __fill_out_list_widget(self):
@@ -310,6 +314,8 @@ class MainWindow(QMainWindow):
         users_count = len(users)
         for i in range(users_count):
             self.ui.users_list.addItem(QListWidgetItem(f"{i+1}. {users[i].full_name}"))
+
+        self.set_size_for_row()
     
 
 if __name__ == '__main__':
