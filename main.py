@@ -265,20 +265,23 @@ class MainWindow(QMainWindow):
     
     def __excel_processing(self, path_file: PosixPath):
         df = pd.read_excel(path_file)
-        
         for row in df.values:
-            name, item, count_str, date_of_receipt = row
-            count = int(str(count_str).split(" ")[0])
-            
-            user_obj = User(full_name=name)
-            user_obj.save()
+            # try:
+                name, item, count_str, date_of_receipt = row
+                count = int(str(count_str).split(" ")[0])
+                
+                user_obj = User(full_name=name)
+                user_obj.save()
 
-            item_obj = Item(title=item)
-            item_obj.save()
 
-            user_item_obj = UserItem(user_id=user_obj.id, item_id=item_obj.id,
-                                     count=count, date_of_receipt=date_of_receipt)
-            user_item_obj.save()
+                item_obj = Item(title=item)
+                item_obj.save()
+
+                user_item_obj = UserItem(user_id=user_obj.id, item_id=item_obj.id,
+                                        count=count, date_of_receipt=date_of_receipt)
+                user_item_obj.save()
+            # except:
+            #     pass
         
 
     def search(self):
