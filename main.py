@@ -48,10 +48,13 @@ class MainWindow(QMainWindow):
             logging.warning(f"При заполнении ListWidget списком пользователей возникла ошибка {e}", exc_info=True)
         self.ui.users_list.clicked.connect(self.select_user)
         self.ui.btn_search.clicked.connect(self.search)
+        self.ui.input_search.textChanged.connect(self.input_search_text_changed)
         self.ui.combo_box_users_list.currentIndexChanged.connect(self.select_action)
         self.ui.btn_get_excel_selected_user.clicked.connect(self.user_excel)
         self.new_window = AnotherWindow()
     
+    def input_search_text_changed(self, event):
+        self.search()
 
     def select_action(self, action_id: int):
         if action_id == 1:
@@ -281,6 +284,12 @@ class MainWindow(QMainWindow):
     def search(self):
         search_user = self.ui.input_search.text()
         if search_user == "":
+            self.ui.table_widget_info_selected_user.clearContents()
+            self.ui.table_widget_info_selected_user.setRowCount(0)
+            self.ui.table_widget_total_selected_user.clearContents()
+            self.ui.table_widget_total_selected_user.setRowCount(0)
+            self.ui.label_selected_user.setText("Выберите человека")
+            self.ui.btn_get_excel_selected_user.setDisabled(True)
             self.ui.users_list.clear()
             self.__fill_out_list_widget()
         else:
