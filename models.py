@@ -1,9 +1,15 @@
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, sessionmaker
 from sqlalchemy import String, create_engine, ForeignKey
 from datetime import date
+import os
 
 
-engine = create_engine("sqlite:///database.db")
+db_path = os.path.join(os.path.expanduser("~"), "documents", "Учет")
+try:
+	os.mkdir(f"{db_path}")
+except:
+	pass
+engine = create_engine(f"sqlite:///{db_path}\database.db")
 Session = sessionmaker(engine)
 
 def create_db_and_tables():

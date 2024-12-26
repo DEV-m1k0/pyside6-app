@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         font.setFamilies([u"Arial"])
         font.setPointSize(24)
         self.label.setFont(font)
-        self.label.setStyleSheet(u"color: #FFFFFF;")
+        self.label.setStyleSheet("color: white;")
         self.label.setLocale(QLocale(QLocale.Russian, QLocale.Russia))
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setWordWrap(True)
@@ -289,6 +289,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
+
     # setupUi
 
     def retranslateUi(self, MainWindow):
