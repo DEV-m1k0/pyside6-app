@@ -5,7 +5,7 @@ git clone https://github.com/DEV-m1k0/social-assistance-accounting
 
 Переходим в директорию приложения:
 ```bash
-cd ./pyside6-app
+cd ./social-assistance-accounting
 ```
 
 Создаем виртуальное окружение:
