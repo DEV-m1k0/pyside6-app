@@ -1,6 +1,6 @@
 Клонируем репозиторий:
 ```bash
-git clone https://github.com/DEV-m1k0/pyside6-app
+git clone https://github.com/DEV-m1k0/social-assistance-accounting
 ```
 
 Переходим в директорию приложения:
